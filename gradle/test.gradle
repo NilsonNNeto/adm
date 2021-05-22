@@ -1,0 +1,39 @@
+sourceSets {
+    acceptanceTest {
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+    }
+}
+
+idea {
+    module {
+        testSourceDirs += project.sourceSets.acceptanceTest.java.srcDirs
+        testSourceDirs += project.sourceSets.acceptanceTest.resources.srcDirs
+    }
+}
+
+configurations {
+    acceptanceTestImplementation.extendsFrom testImplementation
+    acceptanceTestCompile.extendsFrom testCompile
+    acceptanceTestRuntime.extendsFrom testRuntime
+}
+
+task acceptanceTest(type: Test, group: 'Verification', description: 'Runs acceptance tests') {
+    testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
+    classpath = sourceSets.acceptanceTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
+acceptanceTest {
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+}
+
+test {
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+    finalizedBy(acceptanceTest)
+    useJUnitPlatform()
+}
