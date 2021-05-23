@@ -1,47 +1,54 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.5'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
-	id 'idea'
-	id "io.freefair.lombok" version "4.1.6"
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'idea'
+    id "io.freefair.lombok" version "4.1.6"
 }
-apply from: 'gradle/test.' +
-		'gradle'
+apply from: 'gradle/test.gradle'
 
 group = 'br.com.meeting'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2020.0.2"
+    }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation group: 'org.springframework.boot', name: 'spring-boot', version: '2.2.0.RELEASE'
-	implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
-	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+    implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
 
-	acceptanceTestCompile 'io.cucumber:cucumber-java:6.10.2'
-	acceptanceTestCompile 'io.cucumber:cucumber-junit:6.10.2'
-	acceptanceTestCompile 'io.cucumber:cucumber-spring:6.10.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    acceptanceTestCompile 'io.cucumber:cucumber-java:6.10.2'
+    acceptanceTestCompile 'io.cucumber:cucumber-junit:6.10.2'
+    acceptanceTestCompile 'io.cucumber:cucumber-spring:6.10.2'
+    acceptanceTestCompile 'org.springframework.boot:spring-boot-starter-webflux'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
