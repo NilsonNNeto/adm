@@ -60,10 +60,6 @@ public class SeatDistributor {
 
     }
 
-    private boolean isSameString(String string1, String string2) {
-        return string1.trim().equalsIgnoreCase(string2.trim());
-    }
-
     private void defineFirstAndSecondLists(List<ParticipationFormEntity> formEntities) {
         List<ParticipationFormEntity> formsMascOnly = formEntities.stream().filter(entity -> MASCULINO.equalsIgnoreCase(entity.getGender())).collect(Collectors.toList());
         List<ParticipationFormEntity> formsFemOnly = formEntities.stream().filter(entity -> FEMININO.equalsIgnoreCase(entity.getGender())).collect(Collectors.toList());
@@ -77,6 +73,10 @@ public class SeatDistributor {
         entitiesResultList.forEach(entity -> result.add(entity.getId().toString()));
 
         return result;
+    }
+
+    private boolean isSameString(String string1, String string2) {
+        return string1.trim().equalsIgnoreCase(string2.trim());
     }
 
 }
