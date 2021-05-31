@@ -2,16 +2,16 @@ package br.com.meeting.adm;
 
 import br.com.meeting.adm.entity.ParticipationFormEntity;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 @SpringBootTest
 class AdmApplicationTests {
 
-    //	@Test
+    @Test
     void testDistributeSeats() {
 
         List<ParticipationFormEntity> formEntities = new LinkedList<>();
@@ -37,15 +37,6 @@ class AdmApplicationTests {
         resultExpected.add("8");
 
         Assertions.assertLinesMatch(resultExpected, resultActual);
-
-    }
-
-    //	@Test
-    void testDistributeSeatsForEmpty() {
-
-        List<String> resultActual = new SeatDistributor().distributeSeats(new LinkedList<>());
-
-        Assertions.assertLinesMatch(Collections.emptyList(), resultActual);
 
     }
 

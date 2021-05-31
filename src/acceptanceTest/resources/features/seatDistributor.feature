@@ -42,7 +42,7 @@ Funcionalidade: Distribuição de assentos
       | 36 | 1.8    | Feminino  |                                              | Santo Antônio        | Enseada             |
       | 37 | 1.76   | Feminino  | Santa rosa de lima                           |                      | Jardim dos Pássaros |
       | 38 | 1.72   | Masculino |                                              | Santo Antônio        | Santo Antônio       |
-      | 39 | 1.62   | Feminino  | São José dsa Senhora de Fátima e Santo Amaro | Matriz               | Santo Antônio       |
+      | 39 | 1.62   | Feminino  | Matriz Nossa Senhora de Fátima e Santo Amaro | Matriz               | Santo Antônio       |
     Quando ocorrer o processamento dos dados
     Entao a ordem das fichas deverá ser
       | id |
