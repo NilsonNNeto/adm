@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,31 +14,38 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("meeting-adm")
+@RequestMapping("Distribuidor de cadeiras")
 public class AdmController {
 
     private final AdmService admService;
 
     @ApiOperation(
-            value = "Distribute Seats",
-            notes = "Create an ordered csv from a xlsx file"
+            value = "Distribuidor de cadeiras",
+            notes = "Recebe a planilha das fichas (xls ou xlsx) e cria um arquivo CSV reorganizando as fichas seguindo a ordenação:\n" +
+                    "\n- Tamanho (do menor para maior);" +
+                    "\n- Gênero (intercala iniciando pelo de maior quantidade);" +
+                    "\n- Paróquia/Capela (intercala pessoas da mesma igreja);" +
+                    "\n- Cidade/Bairro (intercala pessoas que moram próximas)."
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(code = 200, message = "Success", response = ResponseEntity.class),
-                    @ApiResponse(code = 400, message = "Bad Request"),
-                    @ApiResponse(code = 422, message = "Invalid file")
+                    @ApiResponse(code = 200, message = "Sucesso", response = ResponseEntity.class),
+                    @ApiResponse(code = 500, message = "O arquivo não está no formato XLS ou XLSX, por favor adicione um arquivo válido.")
             }
     )
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public MultipartFile distributeSeats(@RequestPart("participationForm") MultipartFile participationForm) throws IOException {
-        admService.distributeSeats(participationForm);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = "text/csv")
+    public ResponseEntity distributeSeats(@RequestPart("Fichas") MultipartFile participationForm) throws IOException {
 
-        return null;
+        File file = admService.distributeSeats(participationForm);
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=" + file.getName())
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(new FileSystemResource(file));
     }
 
 
