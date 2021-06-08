@@ -40,7 +40,7 @@ public class SeatDistributorStepdefs {
 
         return ParticipationFormEntity.builder()
                 .id(Integer.parseInt(entry.get("id")))
-                .height(new Double(entry.get("altura")))
+                .height(Double.valueOf(entry.get("altura")))
                 .gender(entry.get("genero"))
                 .church(capela.isEmpty() ? paroquia : capela)
                 .location(entry.get("bairro"))
