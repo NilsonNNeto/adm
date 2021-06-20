@@ -34,7 +34,7 @@ public class AdmController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(code = 200, message = "Sucesso", response = ResponseEntity.class),
+                    @ApiResponse(code = 200, message = "Sucesso, clique acima para fazer o download.", response = ResponseEntity.class),
                     @ApiResponse(code = 500, message = "O arquivo não está no formato XLS ou XLSX, por favor adicione um arquivo válido.")
             }
     )
