@@ -1,12 +1,9 @@
 package br.com.meeting.adm;
 
-import br.com.meeting.adm.entity.Gender;
+import br.com.meeting.adm.entity.GenderEnum;
 import br.com.meeting.adm.entity.ParticipationFormEntity;
-import lombok.SneakyThrows;
+import br.com.meeting.adm.model.RoomsOrderRequested;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,79 +11,51 @@ import java.util.stream.Collectors;
 
 public class RoomDistributor {
 
-    private final String CSV_FILE_NAME = "Fichas distribuídas por quartos.csv";
-
     private List<ParticipationFormEntity> underNineteenList;
-    private List<ParticipationFormEntity> nineteenToTwentyfourList;
+    private List<ParticipationFormEntity> nineteenToTwentyFourList;
     private List<ParticipationFormEntity> aboveTwentyFourList;
     private List<ParticipationFormEntity> resultList = new LinkedList<>();
 
-    public File distributeRooms(List<ParticipationFormEntity> formEntities) {
-        Arrays.stream(Gender.values()).forEach(gender -> {
-            distributeByGender(formEntities, gender);
+    public List<ParticipationFormEntity> distributeRooms(List<ParticipationFormEntity> formEntities, RoomsOrderRequested roomsOrderRequested) {
+        Arrays.stream(GenderEnum.values()).forEach(gender -> {
+            distributeByGender(formEntities, roomsOrderRequested, gender);
         });
 
-        return createResultFile();
+        return resultList;
     }
 
-    private void distributeByGender(List<ParticipationFormEntity> formEntities, Gender gender) {
+    private void distributeByGender(List<ParticipationFormEntity> formEntities, RoomsOrderRequested roomsOrder, GenderEnum gender) {
 
-        defineListsByAge(formEntities, Gender.FEMININO);
+        defineListsByAge(formEntities, gender);
+
+        Integer room = 0;
+        List<ParticipationFormEntity> roommates;
 
         while (haveParticipantsToDistribute()) {
 
-            Integer room = 0;
-            List<ParticipationFormEntity> roommates = new LinkedList<>();
+            room = getNewRoom(room, roomsOrder, gender);
+            roommates = new LinkedList<>();
 
-            if (underNineteenList.size() > 0) {
-                checkNewRoommate(room, roommates, underNineteenList);
-            }
+            checkNewRoommate(room, roommates, underNineteenList);
 
-            if (nineteenToTwentyfourList.size() > 0) {
-                checkNewRoommate(room, roommates, nineteenToTwentyfourList);
-            }
+            checkNewRoommate(room, roommates, nineteenToTwentyFourList);
 
-            if (aboveTwentyFourList.size() > 0) {
-                checkNewRoommate(room, roommates, aboveTwentyFourList);
-            }
+            checkNewRoommate(room, roommates, aboveTwentyFourList);
 
             resultList.addAll(roommates);
         }
     }
 
-    private void checkNewRoommate(Integer room, List<ParticipationFormEntity> roommates, List<ParticipationFormEntity> entities) {
-        ParticipationFormEntity newRoommate = entities.get(0);
-        boolean acceptNewRoommate = true;
-
-        for (ParticipationFormEntity mate : roommates) {
-            acceptNewRoommate = acceptNewRoommate && isDifferentChurchAndLocation(mate, newRoommate);
-        }
-
-        if (acceptNewRoommate) {
-            entities.remove(newRoommate);
-            newRoommate.setRoom(room);
-            roommates.add(newRoommate);
-        }
-
-    }
-
-    private boolean isDifferentChurchAndLocation(ParticipationFormEntity roommate, ParticipationFormEntity newRoommate) {
-        boolean differentChurch = !roommate.getChurch().trim().equalsIgnoreCase(newRoommate.getChurch().trim());
-        boolean differentLocation = !roommate.getLocation().trim().equalsIgnoreCase(newRoommate.getLocation().trim());
-
-        return differentChurch && differentLocation;
-    }
-
-    private void defineListsByAge(List<ParticipationFormEntity> formEntities, Gender gender) {
+    private void defineListsByAge(List<ParticipationFormEntity> formEntities, GenderEnum gender) {
         List<ParticipationFormEntity> participants =
-                getParticipantsByGender(formEntities, gender.name());
+                getParticipantsByGender(formEntities, gender);
 
         underNineteenList = participants
                 .stream()
                 .filter(entity -> entity.getAge() < 19)
                 .collect(Collectors.toList());
 
-        nineteenToTwentyfourList = participants
+        nineteenToTwentyFourList = participants
                 .stream()
                 .filter(entity -> entity.getAge() >= 19 && entity.getAge() <= 24)
                 .collect(Collectors.toList());
@@ -97,38 +66,76 @@ public class RoomDistributor {
                 .collect(Collectors.toList());
     }
 
-    private List<ParticipationFormEntity> getParticipantsByGender(List<ParticipationFormEntity> formEntities, String gender) {
+    private List<ParticipationFormEntity> getParticipantsByGender(List<ParticipationFormEntity> formEntities, GenderEnum gender) {
         return formEntities
                 .stream()
-                .filter(entity -> gender.equalsIgnoreCase(entity.getGender()))
+                .filter(entity -> gender.name().equalsIgnoreCase(entity.getGender()))
                 .collect(Collectors.toList());
     }
 
     private boolean haveParticipantsToDistribute() {
-        return !underNineteenList.isEmpty() || !nineteenToTwentyfourList.isEmpty() || !aboveTwentyFourList.isEmpty();
+        return !underNineteenList.isEmpty() || !nineteenToTwentyFourList.isEmpty() || !aboveTwentyFourList.isEmpty();
     }
 
-    @SneakyThrows
-    private File createResultFile() {
-        FileWriter csvFile = new FileWriter(CSV_FILE_NAME);
+    private Integer getNewRoom(Integer room, RoomsOrderRequested roomsOrder, GenderEnum gender) {
 
-        csvFile.append("|Ficha|Quarto|\n");
+        if (room == 0 && GenderEnum.FEMININO == gender) {
+            return roomsOrder.getInitialRoomFemale() < 0 ? 0 : roomsOrder.getInitialRoomFemale();
+        }
 
-        resultList.stream()
-                .forEachOrdered(entity -> {
-                            try {
-                                csvFile.append("|" + entity.getId() + "|")
-                                        .append(entity.getRoom() + "|")
-                                        .append("\n");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                );
+        if (room == 0 && GenderEnum.MASCULINO == gender) {
+            return roomsOrder.getInitialRoomMale() < 0 ? 0 : roomsOrder.getInitialRoomMale();
+        }
 
-        csvFile.flush();
-        csvFile.close();
+        if (GenderEnum.FEMININO == gender) {
+            if (roomsOrder.getOrderFemale() == "C") {
+                return ++room;
+            } else {
+                return --room;
+            }
+        }
 
-        return new File(CSV_FILE_NAME);
+        if (GenderEnum.MASCULINO == gender) {
+            if (roomsOrder.getOrderMale() == "C") {
+                return ++room;
+            } else {
+                return --room;
+            }
+        }
+
+        return 0;
     }
+
+    private void checkNewRoommate(Integer room, List<ParticipationFormEntity> roommates, List<ParticipationFormEntity> entities) {
+
+        for (ParticipationFormEntity newRoommate : entities) {
+            boolean acceptNewRoommate = true;
+
+            for (ParticipationFormEntity mate : roommates) {
+                acceptNewRoommate = acceptNewRoommate && isDifferentChurchAndLocation(mate, newRoommate);
+            }
+
+            if (acceptNewRoommate || isTheLastOfList(entities, newRoommate)) {
+                entities.remove(newRoommate);
+                newRoommate.setRoom(room);
+                roommates.add(newRoommate);
+                return;
+            }
+
+        }
+
+    }
+
+    private boolean isDifferentChurchAndLocation(ParticipationFormEntity roommate, ParticipationFormEntity
+            newRoommate) {
+        boolean differentChurch = !roommate.getChurch().trim().equalsIgnoreCase(newRoommate.getChurch().trim());
+        boolean differentLocation = !roommate.getLocation().trim().equalsIgnoreCase(newRoommate.getLocation().trim());
+
+        return differentChurch && differentLocation;
+    }
+
+    private boolean isTheLastOfList(List<ParticipationFormEntity> entities, ParticipationFormEntity entity) {
+        return (entities.size() - 1) == entities.indexOf(entity);
+    }
+
 }

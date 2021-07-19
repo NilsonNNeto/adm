@@ -86,7 +86,7 @@ Funcionalidade: Distribuição de assentos
       | 19 |
       | 22 |
 
-  Cenário: Distribui assentos entre 3 homens e 3 mulher
+  Cenário: Distribui assentos entre 3 homens e 3 mulheres
     Dadas as fichas cadastrais
       | id | altura | genero    | paroquia                                     | capela        | bairro         |
       | 1  | 1.48   | Feminino  | Santo Amaro                                  |               | Castelo        |

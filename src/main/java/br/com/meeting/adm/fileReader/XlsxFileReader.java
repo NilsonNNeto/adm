@@ -24,8 +24,9 @@ public class XlsxFileReader {
             if (row.getRowNum() == sheet.getFirstRowNum() || row.getCell(0) == null) return;
 
             forms.add(ParticipationFormEntity.builder()
-                    .id(Double.valueOf((cellValue(row, 1))).intValue())
+                    .id(Double.valueOf(cellValue(row, 1)).intValue())
                     .gender(cellValue(row, 5))
+                    .age(Double.valueOf(row.getCell(7).getNumericCellValue()).intValue())
                     .height(Double.valueOf(cellValue(row, 4)))
                     .church(cellValue(row, 15).isEmpty() ? cellValue(row, 14) : cellValue(row, 15))
                     .location(cellValue(row, 10))

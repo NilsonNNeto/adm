@@ -10,8 +10,10 @@ public class ParticipationFormEntity implements Comparable<ParticipationFormEnti
     private Integer id;
     private Double height;
     private String gender;
+    private Integer age;
     private String church;
     private String location;
+    private Integer room;
 
     @Override
     public int compareTo(ParticipationFormEntity other) {
