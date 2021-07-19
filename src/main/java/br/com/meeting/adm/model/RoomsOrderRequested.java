@@ -12,4 +12,10 @@ public class RoomsOrderRequested {
     private String orderFemale;
     private String orderMale;
 
+    public RoomsOrderRequested(Integer initialRoomFemale, Integer initialRoomMale, String orderFemale, String orderMale) {
+        this.initialRoomFemale = initialRoomFemale;
+        this.initialRoomMale = initialRoomMale;
+        this.orderFemale = orderFemale;
+        this.orderMale = orderMale;
+    }
 }

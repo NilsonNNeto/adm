@@ -28,13 +28,10 @@ public class RoomDistributor {
 
         defineListsByAge(formEntities, gender);
 
-        Integer room = 0;
-        List<ParticipationFormEntity> roommates;
+        Integer room = getFirstRoom(roomsOrder, gender);
+        List<ParticipationFormEntity> roommates = new LinkedList<>();
 
         while (haveParticipantsToDistribute()) {
-
-            room = getNewRoom(room, roomsOrder, gender);
-            roommates = new LinkedList<>();
 
             checkNewRoommate(room, roommates, underNineteenList);
 
@@ -42,8 +39,31 @@ public class RoomDistributor {
 
             checkNewRoommate(room, roommates, aboveTwentyFourList);
 
-            resultList.addAll(roommates);
+            if (isGoodRoommatesNumber(roommates)) {
+                resultList.addAll(roommates);
+                roommates = new LinkedList<>();
+                room = getNewRoom(room, roomsOrder, gender);
+            }
         }
+    }
+
+    private boolean isGoodRoommatesNumber(List<ParticipationFormEntity> roommates) {
+        return roommates.size() == 3 || !haveParticipantsToDistribute();
+    }
+
+    private Integer getFirstRoom(RoomsOrderRequested roomsOrder, GenderEnum gender) {
+        Integer newRoom = 0;
+
+        if (GenderEnum.FEMININO == gender) {
+            newRoom = roomsOrder.getInitialRoomFemale();
+        }
+
+        if (GenderEnum.MASCULINO == gender) {
+            newRoom = roomsOrder.getInitialRoomMale();
+        }
+
+        return newRoom > 0 ? newRoom : 0;
+
     }
 
     private void defineListsByAge(List<ParticipationFormEntity> formEntities, GenderEnum gender) {
@@ -79,34 +99,28 @@ public class RoomDistributor {
 
     private Integer getNewRoom(Integer room, RoomsOrderRequested roomsOrder, GenderEnum gender) {
 
-        if (room == 0 && GenderEnum.FEMININO == gender) {
-            return roomsOrder.getInitialRoomFemale() < 0 ? 0 : roomsOrder.getInitialRoomFemale();
-        }
-
-        if (room == 0 && GenderEnum.MASCULINO == gender) {
-            return roomsOrder.getInitialRoomMale() < 0 ? 0 : roomsOrder.getInitialRoomMale();
-        }
-
         if (GenderEnum.FEMININO == gender) {
             if (roomsOrder.getOrderFemale() == "C") {
-                return ++room;
+                room++;
             } else {
-                return --room;
+                room--;
             }
         }
 
         if (GenderEnum.MASCULINO == gender) {
             if (roomsOrder.getOrderMale() == "C") {
-                return ++room;
+                room++;
             } else {
-                return --room;
+                room--;
             }
         }
 
-        return 0;
+        return room;
     }
 
     private void checkNewRoommate(Integer room, List<ParticipationFormEntity> roommates, List<ParticipationFormEntity> entities) {
+
+        if (roommates.size() == 3) return;
 
         for (ParticipationFormEntity newRoommate : entities) {
             boolean acceptNewRoommate = true;

@@ -65,14 +65,7 @@ public class AdmController {
             }
     )
     @PostMapping(path = "/rooms")
-    public ResponseEntity distributeRooms(@RequestPart("Fichas") MultipartFile participationForm) throws IOException {
-
-        RoomsOrderRequested roomsOrderRequested = RoomsOrderRequested.builder()
-                .initialRoomFemale(54)
-                .initialRoomMale(96)
-                .orderFemale("C")
-                .orderMale("D")
-                .build();
+    public ResponseEntity distributeRooms(@RequestPart("Fichas") MultipartFile participationForm, RoomsOrderRequested roomsOrderRequested) throws IOException {
 
         File file = admService.distributeRooms(participationForm, roomsOrderRequested);
         return ResponseEntity.ok()
