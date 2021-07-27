@@ -2,7 +2,7 @@
 Funcionalidade: Distribuição de assentos
 
   Cenário: Distribui quartos de acordo com gênero, faixa etária, igreja e bairro
-    Dadas as fichas cadastrais
+    Dadas as fichas cadastrais dos quartos
       | id | idade | genero    | paroquia                                     | capela               | bairro              |
       | 1  | 14    | Masculino | Matriz Nossa Senhora de Fátima e Santo Amaro | Matriz               | Santo Antônio       |
       | 2  | 17    | Feminino  | Matriz Nossa Senhora de Fátima e Santo Amaro | Santo Antônio        | Santo Antônio       |
@@ -43,13 +43,10 @@ Funcionalidade: Distribuição de assentos
       | 37 | 27    | Feminino  | Santa rosa de lima                           |                      | Jardim dos Pássaros |
       | 38 | 27    | Masculino |                                              | Santo Antônio        | Santo Antônio       |
       | 39 | 26    | Feminino  | Matriz Nossa Senhora de Fátima e Santo Amaro | Matriz               | Santo Antônio       |
-    E o número do quarto feminino com a ordenação
-      | quarto | ordem |
-      | 54     | C     |
-    E o número do quarto masculino com a ordenação
-      | quarto | ordem |
-      | 96     | D     |
-    Quando ocorrer o processamento dos dados
+    E o número do quarto feminino e masculino com a ordenação
+      | quarto feminino | ordem feminino | quarto masculino | ordem masculino |
+      | 54              | C              | 96               | D               |
+    Quando ocorrer o separação dos quartos
     Entao a divisão dos quartos deverá ser
       | id | quarto |
       | 2  | 54     |
@@ -94,7 +91,7 @@ Funcionalidade: Distribuição de assentos
 
 
   Cenário: Distribui quartos entre 3 homens e 3 mulheres
-    Dadas as fichas cadastrais
+    Dadas as fichas cadastrais dos quartos
       | id | idade | genero    | paroquia                                     | capela        | bairro         |
       | 1  | 14    | Feminino  | Santo Amaro                                  |               | Castelo        |
       | 2  | 15    | Masculino |                                              |               | Barra Funda    |
@@ -102,13 +99,10 @@ Funcionalidade: Distribuição de assentos
       | 4  | 27    | Masculino |                                              | Santo Antônio | Canto do Forte |
       | 5  | 20    | Feminino  |                                              | Santo Antônio | Morrinhos      |
       | 6  | 19    | Masculino | Matriz Nossa Senhora de Fátima e Santo Amaro | Santo Antônio | Barreira       |
-    E o número do quarto feminino com a ordenação
-      | quarto | ordem |
-      | 54     | C     |
-    E o número do quarto masculino com a ordenação
-      | quarto | ordem |
-      | 96     | D     |
-    Quando ocorrer o processamento dos dados
+    E o número do quarto feminino e masculino com a ordenação
+      | quarto feminino | ordem feminino | quarto masculino | ordem masculino |
+      | 54              | C              | 96               | D               |
+    Quando ocorrer o separação dos quartos
     Entao a divisão dos quartos deverá ser
       | id | quarto |
       | 1  | 54     |
@@ -119,7 +113,7 @@ Funcionalidade: Distribuição de assentos
       | 4  | 96     |
 
   Cenário: Distribui quartos entre pessoas do mesmo gênero
-    Dadas as fichas cadastrais
+    Dadas as fichas cadastrais dos quartos
       | id | idade | genero   | paroquia                                     | capela        | bairro         |
       | 1  | 24    | Feminino | Santo Amaro                                  | Santo Antônio | Castelo        |
       | 2  | 26    | Feminino |                                              |               | Barra Funda    |
@@ -127,13 +121,10 @@ Funcionalidade: Distribuição de assentos
       | 4  | 29    | Feminino |                                              | Santo Antônio | Canto do Forte |
       | 5  | 21    | Feminino |                                              |               | Morrinhos      |
       | 6  | 15    | Feminino | Matriz Nossa Senhora de Fátima e Santo Amaro | Santo Antônio | Barreira       |
-    E o número do quarto feminino com a ordenação
-      | quarto | ordem |
-      | 54     | C     |
-    E o número do quarto masculino com a ordenação
-      | quarto | ordem |
-      | 96     | D     |
-    Quando ocorrer o processamento dos dados
+    E o número do quarto feminino e masculino com a ordenação
+      | quarto feminino | ordem feminino | quarto masculino | ordem masculino |
+      | 54              | C              | 96               | D               |
+    Quando ocorrer o separação dos quartos
     Entao a divisão dos quartos deverá ser
       | id | quarto |
       | 3  | 54     |

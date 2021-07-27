@@ -2,7 +2,7 @@
 Funcionalidade: Distribuição de assentos
 
   Cenário: Distribui assentos de acordo com altura, gênero, igreja e bairro
-    Dadas as fichas cadastrais
+    Dadas as fichas cadastrais das cadeiras
       | id | altura | genero    | paroquia                                     | capela               | bairro              |
       | 1  | 1.72   | Masculino | Matriz Nossa Senhora de Fátima e Santo Amaro | Matriz               | Santo Antônio       |
       | 2  | 1.72   | Feminino  | Matriz Nossa Senhora de Fátima e Santo Amaro | Santo Antônio        | Santo Antônio       |
@@ -87,7 +87,7 @@ Funcionalidade: Distribuição de assentos
       | 22 |
 
   Cenário: Distribui assentos entre 3 homens e 3 mulheres
-    Dadas as fichas cadastrais
+    Dadas as fichas cadastrais das cadeiras
       | id | altura | genero    | paroquia                                     | capela        | bairro         |
       | 1  | 1.48   | Feminino  | Santo Amaro                                  |               | Castelo        |
       | 2  | 1.63   | Masculino |                                              |               | Barra Funda    |
@@ -106,7 +106,7 @@ Funcionalidade: Distribuição de assentos
       | 4  |
 
   Cenário: Distribui assentos entre 5 homens e 1 mulher
-    Dadas as fichas cadastrais
+    Dadas as fichas cadastrais das cadeiras
       | id | altura | genero    | paroquia                                     | capela        | bairro         |
       | 1  | 1.48   | Masculino | Santo Amaro                                  |               | Castelo        |
       | 2  | 1.63   | Masculino |                                              |               | Barra Funda    |
@@ -125,7 +125,7 @@ Funcionalidade: Distribuição de assentos
       | 5  |
 
   Cenário: Distribui assentos entre pessoas do mesmo gênero
-    Dadas as fichas cadastrais
+    Dadas as fichas cadastrais das cadeiras
       | id | altura | genero   | paroquia                                     | capela        | bairro         |
       | 1  | 1.48   | Feminino | Santo Amaro                                  |               | Castelo        |
       | 2  | 1.63   | Feminino |                                              |               | Barra Funda    |

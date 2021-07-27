@@ -3,7 +3,7 @@ package br.com.meeting.adm.service;
 import br.com.meeting.adm.RoomDistributor;
 import br.com.meeting.adm.SeatDistributor;
 import br.com.meeting.adm.entity.ParticipationFormEntity;
-import br.com.meeting.adm.model.RoomsOrderRequested;
+import br.com.meeting.adm.model.RoomsOrderRequest;
 import br.com.meeting.adm.exception.InvalidFileException;
 import br.com.meeting.adm.fileReader.XlsxFileReader;
 import lombok.SneakyThrows;
@@ -26,14 +26,14 @@ public class AdmService {
         return new SeatDistributor().buildCsvFromFile(new XlsxFileReader().readFileBuildForms(participationForm));
     }
 
-    public File distributeRooms(final MultipartFile participationForm, RoomsOrderRequested roomsOrderRequested) throws IOException {
+    public File distributeRooms(final MultipartFile participationForm, RoomsOrderRequest roomsOrderRequeste) throws IOException {
         validateFile(participationForm);
 
         List<ParticipationFormEntity> formParticipants =
                 new XlsxFileReader().readFileBuildForms(participationForm);
 
         List<ParticipationFormEntity> distributedParticipants =
-                new RoomDistributor().distributeRooms(formParticipants, roomsOrderRequested);
+                new RoomDistributor().distributeRooms(formParticipants, roomsOrderRequeste);
 
         return createRoomsResultFile(distributedParticipants);
     }

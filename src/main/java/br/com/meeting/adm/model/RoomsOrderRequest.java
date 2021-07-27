@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RoomsOrderRequested {
+public class RoomsOrderRequest {
 
     private Integer initialRoomFemale;
     private Integer initialRoomMale;

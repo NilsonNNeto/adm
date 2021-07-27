@@ -2,7 +2,7 @@ package br.com.meeting.adm;
 
 import br.com.meeting.adm.entity.GenderEnum;
 import br.com.meeting.adm.entity.ParticipationFormEntity;
-import br.com.meeting.adm.model.RoomsOrderRequested;
+import br.com.meeting.adm.model.RoomsOrderRequest;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -16,15 +16,15 @@ public class RoomDistributor {
     private List<ParticipationFormEntity> aboveTwentyFourList;
     private List<ParticipationFormEntity> resultList = new LinkedList<>();
 
-    public List<ParticipationFormEntity> distributeRooms(List<ParticipationFormEntity> formEntities, RoomsOrderRequested roomsOrderRequested) {
+    public List<ParticipationFormEntity> distributeRooms(List<ParticipationFormEntity> formEntities, RoomsOrderRequest roomsOrderRequeste) {
         Arrays.stream(GenderEnum.values()).forEach(gender -> {
-            distributeByGender(formEntities, roomsOrderRequested, gender);
+            distributeByGender(formEntities, roomsOrderRequeste, gender);
         });
 
         return resultList;
     }
 
-    private void distributeByGender(List<ParticipationFormEntity> formEntities, RoomsOrderRequested roomsOrder, GenderEnum gender) {
+    private void distributeByGender(List<ParticipationFormEntity> formEntities, RoomsOrderRequest roomsOrder, GenderEnum gender) {
 
         defineListsByAge(formEntities, gender);
 
@@ -51,7 +51,7 @@ public class RoomDistributor {
         return roommates.size() == 3 || !haveParticipantsToDistribute();
     }
 
-    private Integer getFirstRoom(RoomsOrderRequested roomsOrder, GenderEnum gender) {
+    private Integer getFirstRoom(RoomsOrderRequest roomsOrder, GenderEnum gender) {
         Integer newRoom = 0;
 
         if (GenderEnum.FEMININO == gender) {
@@ -97,7 +97,7 @@ public class RoomDistributor {
         return !underNineteenList.isEmpty() || !nineteenToTwentyFourList.isEmpty() || !aboveTwentyFourList.isEmpty();
     }
 
-    private Integer getNewRoom(Integer room, RoomsOrderRequested roomsOrder, GenderEnum gender) {
+    private Integer getNewRoom(Integer room, RoomsOrderRequest roomsOrder, GenderEnum gender) {
 
         if (GenderEnum.FEMININO == gender) {
             if ("C".equalsIgnoreCase(roomsOrder.getOrderFemale())) {

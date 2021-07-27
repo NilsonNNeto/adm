@@ -18,8 +18,8 @@ public class SeatDistributorStepdefs {
 
     private List<String> resultIdsActual = new LinkedList<>();
 
-    @Dadas("as fichas cadastrais")
-    public void asFichasCadastrais(List<ParticipationFormEntity> entry) {
+    @Dadas("as fichas cadastrais das cadeiras")
+    public void asFichasCadastraisDasCadeiras(List<ParticipationFormEntity> entry) {
         forms.addAll(entry);
     }
 
@@ -37,10 +37,13 @@ public class SeatDistributorStepdefs {
     public ParticipationFormEntity convertParticipationFormEntity(Map<String, String> entry) {
         String capela = entry.get("capela") == null ? "" : entry.get("capela");
         String paroquia = entry.get("paroquia") == null ? "" : entry.get("paroquia");
+        Double altura = entry.get("altura") == null ? 0 : Double.valueOf(entry.get("altura"));
+        Integer idade = entry.get("idade") == null ? 0 : Integer.parseInt(entry.get("idade"));
 
         return ParticipationFormEntity.builder()
                 .id(Integer.parseInt(entry.get("id")))
-                .height(Double.valueOf(entry.get("altura")))
+                .height(altura)
+                .age(idade)
                 .gender(entry.get("genero"))
                 .church(capela.isEmpty() ? paroquia : capela)
                 .location(entry.get("bairro"))

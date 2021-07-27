@@ -1,6 +1,6 @@
 package br.com.meeting.adm.gateway.controller;
 
-import br.com.meeting.adm.model.RoomsOrderRequested;
+import br.com.meeting.adm.model.RoomsOrderRequest;
 import br.com.meeting.adm.service.AdmService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -91,14 +91,14 @@ public class AdmController {
             @RequestParam(name = "orderMale", required = true, defaultValue = "D")
             @Pattern(message = "Ordem precisa ser C ou D", regexp = "^[c]$|^[C]$|^[d]$|^[D]$", flags = Pattern.Flag.CASE_INSENSITIVE) final String orderMale
     ) throws IOException {
-        RoomsOrderRequested roomsOrderRequested = RoomsOrderRequested.builder()
+        RoomsOrderRequest roomsOrderRequeste = RoomsOrderRequest.builder()
                 .initialRoomFemale(initialRoomFemale)
                 .orderFemale(orderFemale)
                 .initialRoomMale(initialRoomMale)
                 .orderMale(orderMale)
                 .build();
 
-        File file = admService.distributeRooms(participationForm, roomsOrderRequested);
+        File file = admService.distributeRooms(participationForm, roomsOrderRequeste);
 
         return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=" + file.getName())
