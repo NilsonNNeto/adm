@@ -39,7 +39,7 @@ public class RoomDistributor {
 
             checkNewRoommate(room, roommates, aboveTwentyFourList);
 
-            if (isGoodRoommatesNumber(roommates)) {
+            if (haveGoodRoommatesNumber(roommates)) {
                 resultList.addAll(roommates);
                 roommates = new LinkedList<>();
                 room = getNewRoom(room, roomsOrder, gender);
@@ -47,7 +47,7 @@ public class RoomDistributor {
         }
     }
 
-    private boolean isGoodRoommatesNumber(List<ParticipationFormEntity> roommates) {
+    private boolean haveGoodRoommatesNumber(List<ParticipationFormEntity> roommates) {
         return roommates.size() == 3 || !haveParticipantsToDistribute();
     }
 
@@ -100,7 +100,7 @@ public class RoomDistributor {
     private Integer getNewRoom(Integer room, RoomsOrderRequested roomsOrder, GenderEnum gender) {
 
         if (GenderEnum.FEMININO == gender) {
-            if (roomsOrder.getOrderFemale() == "C") {
+            if ("C".equalsIgnoreCase(roomsOrder.getOrderFemale())) {
                 room++;
             } else {
                 room--;
@@ -108,7 +108,7 @@ public class RoomDistributor {
         }
 
         if (GenderEnum.MASCULINO == gender) {
-            if (roomsOrder.getOrderMale() == "C") {
+            if ("C".equalsIgnoreCase(roomsOrder.getOrderMale())) {
                 room++;
             } else {
                 room--;

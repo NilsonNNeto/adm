@@ -3,18 +3,19 @@ package br.com.meeting.adm.gateway.controller;
 import br.com.meeting.adm.model.RoomsOrderRequested;
 import br.com.meeting.adm.service.AdmService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.io.File;
 import java.io.IOException;
 
@@ -65,14 +66,44 @@ public class AdmController {
             }
     )
     @PostMapping(path = "/rooms")
-    public ResponseEntity distributeRooms(@RequestPart("Fichas") MultipartFile participationForm, RoomsOrderRequested roomsOrderRequested) throws IOException {
+    public ResponseEntity distributeRooms(
+            @RequestPart(value = "Fichas")
+            @Valid MultipartFile participationForm,
+
+            @ApiParam(name = "initialRoomFemale",
+                    value = "Quarto inicial - Feminino")
+            @RequestParam(name = "initialRoomFemale", required = true, defaultValue = "54")
+            @Valid @Min(value = 0, message = "Quarto precisa ser um número maior que 0") final Integer initialRoomFemale,
+
+            @ApiParam(name = "orderFemale",
+                    value = "Ordenação - Feminino (C para Crescente ou D para Decrescente)")
+            @RequestParam(name = "orderFemale", required = true, defaultValue = "C")
+            @Pattern(message = "Ordem precisa ser C ou D", regexp = "^[c]$|^[C]$|^[d]$|^[D]$", flags = Pattern.Flag.CASE_INSENSITIVE) final String orderFemale,
+
+            @ApiParam(name = "initialRoomMale",
+                    value = "Quarto inicial - Masculino")
+            @RequestParam(name = "initialRoomMale", required = true, defaultValue = "96")
+            @Valid @Min(value = 0, message = "Quarto precisa ser um número maior que 0") final Integer initialRoomMale,
+
+            @ApiParam(name = "orderMale",
+                    value = "Ordenação - Masculino (C para Crescente ou D para Decrescente)")
+
+            @RequestParam(name = "orderMale", required = true, defaultValue = "D")
+            @Pattern(message = "Ordem precisa ser C ou D", regexp = "^[c]$|^[C]$|^[d]$|^[D]$", flags = Pattern.Flag.CASE_INSENSITIVE) final String orderMale
+    ) throws IOException {
+        RoomsOrderRequested roomsOrderRequested = RoomsOrderRequested.builder()
+                .initialRoomFemale(initialRoomFemale)
+                .orderFemale(orderFemale)
+                .initialRoomMale(initialRoomMale)
+                .orderMale(orderMale)
+                .build();
 
         File file = admService.distributeRooms(participationForm, roomsOrderRequested);
+
         return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=" + file.getName())
                 .contentType(MediaType.parseMediaType("text/csv"))
                 .body(new FileSystemResource(file));
     }
-
 
 }
