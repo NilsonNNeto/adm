@@ -42,15 +42,15 @@ public class RoomDistributorStepDefs {
 
         assertEquals(expectedResult.size(), actualResult.size());
 
-        expectedResult.forEach((id, room) -> actualResult.forEach(entity -> {
+        expectedResult.forEach((id, room) ->
+                actualResult.forEach(entity -> {
 
-            if (id.equals(entity.getId())) {
-                assertEquals(room, entity.getRoom());
-                return;
-            }
+                    if (id.equals(entity.getId())) {
+                        assertEquals(room, entity.getRoom());
+                        return;
+                    }
 
-        }));
-
+                }));
     }
 
     @DataTableType

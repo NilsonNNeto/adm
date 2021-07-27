@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 class AdmApplicationTests {
 
@@ -24,20 +26,21 @@ class AdmApplicationTests {
         formEntities.add(buildNewParticipationForm(7, 1.3, "Masculino", "Matriz", "Jardim dos Passáros"));
         formEntities.add(buildNewParticipationForm(8, 2.4, "Feminino", "Santo Antônio", "Jardim dos Passáros"));
 
-        List<String> resultActual = new SeatDistributor().distributeSeats(formEntities);
+        List<ParticipationFormEntity> actualResult = new SeatDistributor().distributeSeats(formEntities);
 
-        List<String> resultExpected = new LinkedList<>();
-        resultExpected.add("3");
-        resultExpected.add("7");
-        resultExpected.add("5");
-        resultExpected.add("1");
-        resultExpected.add("2");
-        resultExpected.add("4");
-        resultExpected.add("6");
-        resultExpected.add("8");
+        List<String> expectedResult = new LinkedList<>();
+        expectedResult.add("3");
+        expectedResult.add("7");
+        expectedResult.add("5");
+        expectedResult.add("1");
+        expectedResult.add("2");
+        expectedResult.add("4");
+        expectedResult.add("6");
+        expectedResult.add("8");
 
-        Assertions.assertLinesMatch(resultExpected, resultActual);
-
+        for (int index = 0; index < expectedResult.size(); index++) {
+            assertEquals(expectedResult.get(index), actualResult.get(index).getId().toString());
+        }
     }
 
     private ParticipationFormEntity buildNewParticipationForm(Integer id, Double height, String gender, String church, String location) {

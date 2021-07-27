@@ -6,17 +6,18 @@ import io.cucumber.java.DataTableType;
 import io.cucumber.java.pt.Dadas;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
-import org.junit.jupiter.api.Assertions;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+
 public class SeatDistributorStepdefs {
 
     private List<ParticipationFormEntity> forms = new LinkedList<>();
 
-    private List<String> resultIdsActual = new LinkedList<>();
+    private List<ParticipationFormEntity> actualResult;
 
     @Dadas("as fichas cadastrais das cadeiras")
     public void asFichasCadastraisDasCadeiras(List<ParticipationFormEntity> entry) {
@@ -25,12 +26,21 @@ public class SeatDistributorStepdefs {
 
     @Quando("ocorrer o processamento dos dados")
     public void ocorrerOProcessamentoDosDados() {
-        resultIdsActual = new SeatDistributor().distributeSeats(forms);
+        actualResult = new SeatDistributor().distributeSeats(forms);
     }
 
     @Entao("a ordem das fichas deverá ser")
-    public void aOrdemDasFichasDeveráSer(List<String> idsExpected) {
-        Assertions.assertLinesMatch(idsExpected, resultIdsActual);
+    public void aOrdemDasFichasDeveráSer(List<String> expectedResult) {
+
+        assertEquals(expectedResult.size(), actualResult.size());
+
+        expectedResult.forEach(id ->
+                {
+                    ParticipationFormEntity entity = actualResult.get(expectedResult.indexOf(id));
+                    assertEquals(id, entity.getId().toString());
+                }
+        );
+
     }
 
     @DataTableType
