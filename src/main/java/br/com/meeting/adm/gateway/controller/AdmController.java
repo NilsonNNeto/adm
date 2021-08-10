@@ -28,11 +28,19 @@ public class AdmController {
 
     @ApiOperation(
             value = "Distribuidor de cadeiras",
-            notes = "Recebe a planilha das fichas (xls ou xlsx) e cria um arquivo CSV reorganizando as fichas seguindo a ordenação:\n" +
-                    "\n- Tamanho (do menor para maior);" +
-                    "\n- Gênero (intercala iniciando pelo de maior quantidade);" +
-                    "\n- Paróquia/Capela (intercala pessoas da mesma igreja);" +
-                    "\n- Cidade/Bairro (intercala pessoas que moram próximas)."
+            notes = "Recebe a planilha das fichas (xls ou xlsx) e cria um arquivo CSV reorganizando as fichas conforme a seguinte ordenação:\n" +
+                    "\n- Altura (do menor para maior);" +
+                    "\n- Gênero (intercala iniciando pelo gênero de maior quantidade);" +
+                    "\n- Paróquia/Capela (intercala pessoas de igreja/capela diferentes);" +
+                    "\n- Cidade/Bairro (intercala pessoas que moram em cidades/bairros diferentes)."+
+                    "\n\n\n O arquivo a ser enviado deve conter as seguintes colunas nas posições: \n" +
+                    "\n- Coluna B : Número da Ficha" +
+                    "\n- Coluna E : Altura" +
+                    "\n- Coluna F : Gênero" +
+                    "\n- Coluna H : Idade" +
+                    "\n- Coluna K : Bairro" +
+                    "\n- Coluna P : Paróquia" +
+                    "\n- Coluna Q : Capela"
     )
     @ApiResponses(
             value = {
@@ -52,12 +60,23 @@ public class AdmController {
 
     @ApiOperation(
             value = "Distribuidor de quartos",
-            notes = "Recebe a planilha das fichas (xls ou xlsx) juntamente com a numeração dos quartos e cria um arquivo CSV reorganizando as fichas seguindo a regra:\n" +
+            notes = "Recebe a planilha das fichas (xls ou xlsx) juntamente com o início da numeração dos quartos e cria um arquivo CSV reorganizando as fichas conforme a seguinte regra:\n" +
                     "\n- Máximo de 3 pessoas por quarto;" +
                     "\n- Gênero (somente mesmo gênero no mesmo quarto);" +
-                    "\n- Idade (seleciona uma pessoa de cada faixa etária [0-18] [19-24] [25+]);" +
-                    "\n- Paróquia/Capela (evita pessoas da mesma igreja);" +
-                    "\n- Cidade/Bairro (evita pessoas que moram próximas)."
+                    "\n- Idade (seleciona uma pessoa de cada faixa etária abaixo);" +
+                    "\n  - de 0 até 18 anos" +
+                    "\n  - de 19 até 24 anos" +
+                    "\n  - maiores de 25 anos" +
+                    "\n- Paróquia/Capela (evita pessoas da mesma igreja/capela);" +
+                    "\n- Cidade/Bairro (evita pessoas que moram na mesma cidade/bairro)."+
+                    "\n\n\n O arquivo a ser enviado deve conter as seguintes colunas nas posições: \n" +
+                    "\n- Coluna B : Número da Ficha" +
+                    "\n- Coluna E : Altura" +
+                    "\n- Coluna F : Gênero" +
+                    "\n- Coluna H : Idade" +
+                    "\n- Coluna K : Bairro" +
+                    "\n- Coluna P : Paróquia" +
+                    "\n- Coluna Q : Capela"
     )
     @ApiResponses(
             value = {
@@ -71,23 +90,22 @@ public class AdmController {
             @Valid MultipartFile participationForm,
 
             @ApiParam(name = "initialRoomFemale",
-                    value = "Quarto inicial - Feminino")
+                    value = "Número do quarto inicial (Feminino)")
             @RequestParam(name = "initialRoomFemale", required = true, defaultValue = "54")
             @Valid @Min(value = 0, message = "Quarto precisa ser um número maior que 0") final Integer initialRoomFemale,
 
             @ApiParam(name = "orderFemale",
-                    value = "Ordenação - Feminino (C para Crescente ou D para Decrescente)")
+                    value = "Ordenação dos quartos Feminino, sendo C = Ordem Crescente ou D = Ordem Decrescente.")
             @RequestParam(name = "orderFemale", required = true, defaultValue = "C")
             @Pattern(message = "Ordem precisa ser C ou D", regexp = "^[c]$|^[C]$|^[d]$|^[D]$", flags = Pattern.Flag.CASE_INSENSITIVE) final String orderFemale,
 
             @ApiParam(name = "initialRoomMale",
-                    value = "Quarto inicial - Masculino")
+                    value = "Número do quarto inicial (Masculino)")
             @RequestParam(name = "initialRoomMale", required = true, defaultValue = "96")
             @Valid @Min(value = 0, message = "Quarto precisa ser um número maior que 0") final Integer initialRoomMale,
 
             @ApiParam(name = "orderMale",
-                    value = "Ordenação - Masculino (C para Crescente ou D para Decrescente)")
-
+                    value = "Ordenação dos quartos Masculino, sendo C = Ordem Crescente ou D = Ordem Decrescente.")
             @RequestParam(name = "orderMale", required = true, defaultValue = "D")
             @Pattern(message = "Ordem precisa ser C ou D", regexp = "^[c]$|^[C]$|^[d]$|^[D]$", flags = Pattern.Flag.CASE_INSENSITIVE) final String orderMale
     ) throws IOException {

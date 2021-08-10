@@ -61,13 +61,12 @@ public class AdmService {
     private File createRoomsResultFile(List<ParticipationFormEntity> resultList) {
         FileWriter csvFile = new FileWriter(CSV_ROOMS_FILE_NAME);
 
-        csvFile.append("|Ficha|Quarto|\n");
+        csvFile.append("Ficha,Quarto\n");
 
         resultList.stream()
                 .forEachOrdered(entity -> {
                             try {
-                                csvFile.append("|" + entity.getId() + "|")
-                                        .append(entity.getRoom() + "|")
+                                csvFile.append(entity.getId() + "," + entity.getRoom())
                                         .append("\n");
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -85,13 +84,12 @@ public class AdmService {
     private File createSeatsResultFile(List<ParticipationFormEntity> resultList) {
         FileWriter csvFile = new FileWriter(CSV_FILE_NAME);
 
-        csvFile.append("|Ficha|Cadeira|\n");
+        csvFile.append("Ficha,Cadeira\n");
 
         resultList.stream()
                 .forEachOrdered(entity -> {
                             try {
-                                csvFile.append("|" + entity.getId() + "|")
-                                        .append(resultList.indexOf(entity) + 1 + "|")
+                                csvFile.append(entity.getId() + "," + (resultList.indexOf(entity) + 1))
                                         .append("\n");
                             } catch (IOException e) {
                                 e.printStackTrace();
