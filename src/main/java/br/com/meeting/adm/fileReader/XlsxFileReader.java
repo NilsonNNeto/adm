@@ -28,7 +28,7 @@ public class XlsxFileReader {
                     .gender(cellValue(row, 5))
                     .age(Double.valueOf(row.getCell(7).getNumericCellValue()).intValue())
                     .height(Double.valueOf(cellValue(row, 4)))
-                    .church(cellValue(row, 15).isEmpty() ? cellValue(row, 14) : cellValue(row, 15))
+                    .church(cellValue(row, 16).isEmpty() ? cellValue(row, 15) : cellValue(row, 16))
                     .location(cellValue(row, 10))
                     .build());
         });
