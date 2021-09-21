@@ -19,8 +19,8 @@ import java.util.List;
 @Service
 public class AdmService {
 
-    private final String CSV_FILE_NAME = "Fichas distribuídas na cadeiras.csv";
-    private final String CSV_ROOMS_FILE_NAME = "Fichas distribuídas por quartos.csv";
+    private final String CSV_FILE_NAME = "/tmp/Fichas distribuídas na cadeiras.csv";
+    private final String CSV_ROOMS_FILE_NAME = "/tmp/Fichas distribuídas por quartos.csv";
 
     public File distributeSeats(final MultipartFile participationForm) throws IOException {
         validateFile(participationForm);
