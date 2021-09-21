@@ -33,14 +33,14 @@ public class AdmService {
         return createSeatsResultFile(distributedParticipants);
     }
 
-    public File distributeRooms(final MultipartFile participationForm, RoomsOrderRequest roomsOrderRequeste) throws IOException {
+    public File distributeRooms(final MultipartFile participationForm, RoomsOrderRequest roomsOrderRequest) throws IOException {
         validateFile(participationForm);
 
         List<ParticipationFormEntity> formParticipants =
                 new XlsxFileReader().readFileBuildForms(participationForm);
 
         List<ParticipationFormEntity> distributedParticipants =
-                new RoomDistributor().distributeRooms(formParticipants, roomsOrderRequeste);
+                new RoomDistributor().distributeRooms(formParticipants, roomsOrderRequest);
 
         return createRoomsResultFile(distributedParticipants);
     }
