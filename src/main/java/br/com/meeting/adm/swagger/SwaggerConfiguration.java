@@ -30,7 +30,7 @@ public class SwaggerConfiguration {
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "ADM Meeting API",
-                "Esta é a especificação para API.",
+                "Para fazer o download da planilha exemplo: [`Clique aqui`](https://github.com/NilsonNNeto/adm/raw/master/Exemplo%20fichas.xlsx)",
                 "1.0",
                 "",
                 null,
